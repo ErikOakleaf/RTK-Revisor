@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RTK Revisor", "RTK Revisor.csproj", "{8F2D443E-F5E3-4149-880E-7CD1741E21B8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8F2D443E-F5E3-4149-880E-7CD1741E21B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F2D443E-F5E3-4149-880E-7CD1741E21B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F2D443E-F5E3-4149-880E-7CD1741E21B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F2D443E-F5E3-4149-880E-7CD1741E21B8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {80FAC0E2-77C1-44EB-9E87-7BF10332F386}
+	EndGlobalSection
+EndGlobal
