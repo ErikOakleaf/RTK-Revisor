@@ -28,12 +28,47 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.kanjiSearchBox = new System.Windows.Forms.TextBox();
+            this.kanjiListBox = new System.Windows.Forms.ListBox();
+            this.SuspendLayout();
+            // 
+            // kanjiSearchBox
+            // 
+            this.kanjiSearchBox.Location = new System.Drawing.Point(87, 45);
+            this.kanjiSearchBox.Name = "kanjiSearchBox";
+            this.kanjiSearchBox.Size = new System.Drawing.Size(282, 38);
+            this.kanjiSearchBox.TabIndex = 0;
+            this.kanjiSearchBox.TextChanged += new System.EventHandler(this.kanjiSearchBox_TextChanged);
+            // 
+            // kanjiListBox
+            // 
+            this.kanjiListBox.FormattingEnabled = true;
+            this.kanjiListBox.ItemHeight = 31;
+            this.kanjiListBox.Location = new System.Drawing.Point(87, 139);
+            this.kanjiListBox.Name = "kanjiListBox";
+            this.kanjiListBox.Size = new System.Drawing.Size(282, 283);
+            this.kanjiListBox.TabIndex = 1;
+            // 
+            // MainWindow
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "MainWindow";
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(837, 451);
+            this.Controls.Add(this.kanjiListBox);
+            this.Controls.Add(this.kanjiSearchBox);
+            this.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Margin = new System.Windows.Forms.Padding(5);
+            this.Name = "MainWindow";
+            this.Text = "RTK Revisor";
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
+
+        private TextBox kanjiSearchBox;
+        private ListBox kanjiListBox;
     }
 }
