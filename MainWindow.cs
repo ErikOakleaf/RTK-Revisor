@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static RTK_Revisor.TextConnectionProcessor;
 
 namespace RTK_Revisor
 {
@@ -18,7 +19,7 @@ namespace RTK_Revisor
         public Regex JapaneseRegex { get; set; }
         public MainWindow()
         {
-            AllKanji = File.ReadAllLines(TextConnectionProcessor.GetPath("data", "allKanji.csv"));
+            AllKanji = GetPath("data", "allKanji.csv").LoadFile();
             JapaneseRegex = new Regex(@"[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]");
 
             InitializeComponent();
@@ -84,6 +85,12 @@ namespace RTK_Revisor
                 }
             }
             WireUpLists();
+        }
+
+        private void createCollectionButton_Click(object sender, EventArgs e)
+        {
+            CreateCollectionForm ccf = new CreateCollectionForm();
+            ccf.Show();
         }
     }
 }
