@@ -16,6 +16,7 @@ namespace RTK_Revisor
     {
         public string[] AllKanji { get; set; }
         public List<string> AvaliableKanji { get; set; } = new List<string>();
+        public List<CollectionModel> Collections { get; set; }
         public Regex JapaneseRegex { get; set; }
         public MainWindow()
         {
@@ -34,6 +35,12 @@ namespace RTK_Revisor
             {
                 kanjiListBox.Items.Add(s);
             }
+
+            Collections = GetPath("collections", "collections.csv").LoadFile().ToList().ConvertToCollectionModels();
+
+            collectionListBox.DataSource = null;
+            collectionListBox.DataSource = Collections;
+            collectionListBox.DisplayMember = "Name";
         }
 
         private void kanjiSearchBox_TextChanged(object sender, EventArgs e)
@@ -91,6 +98,14 @@ namespace RTK_Revisor
         {
             CreateCollectionForm ccf = new CreateCollectionForm();
             ccf.Show();
+            ccf.ButtonWasClicked += new CreateCollectionForm.ClickButton(WireUpLists);
+        }
+
+        private void reviseCollectionButton_Click(object sender, EventArgs e)
+        {
+            RevisionForm rf = new RevisionForm((CollectionModel)collectionListBox.SelectedItem);
+            rf.Show();
+            this.Hide();
         }
     }
 }

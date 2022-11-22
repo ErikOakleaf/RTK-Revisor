@@ -13,28 +13,153 @@ namespace RTK_Revisor
     public partial class RevisionForm : Form
     {
 
-        public CollectionModel collection;
-        private int currentIndex = 0;
-
-        //sample data
-
+        private CollectionModel collection;
+        private List<FlashCardModel> currentFlashCards;
+        private bool showEnglishAnswer = false;
 
         public RevisionForm(CollectionModel collection)
         {
             this.collection = collection;
+            currentFlashCards = collection.FlashCards;
             InitializeComponent();
-            InitializeForm();
+            ShowFirstPage();
         }
 
-        private void InitializeForm()
+        private void ShowFirstPage()
         {
             yesButton.Hide();
             noButton.Hide();
+            flipButton.Show();
+            if (!showEnglishAnswer)
+            {
+                flashCardLabel.Text = currentFlashCards[0].Word; 
+            }
+            else
+            {
+                flashCardLabel.Text = currentFlashCards[0].Kanji;
+            }
+            rtkIndexLabel.Hide();
         }
 
-        private void WireUpLists()
+        private void flipButton_Click(object sender, EventArgs e)
         {
-            flashCardLabel.Text = collection.FlashCards[0].Word;
+
+            if (!showEnglishAnswer)
+            {
+                flashCardLabel.Text = currentFlashCards[0].Kanji; 
+            }
+            else
+            {
+                flashCardLabel.Text = currentFlashCards[0].Word;
+            }
+            scaleFont(flashCardLabel);
+            rtkIndexLabel.Text = $"RTK Index: {currentFlashCards[0].RTKIndex}";
+            rtkIndexLabel.Show();
+
+            yesButton.Show();
+            noButton.Show();
+            flipButton.Hide();
+        }
+        private void scaleFont(Label lab)
+        {
+            Image fakeImage = new Bitmap(1, 1);
+            Graphics graphics = Graphics.FromImage(fakeImage);
+
+            SizeF extent = graphics.MeasureString(lab.Text, lab.Font);
+
+            float hRatio = lab.Height / extent.Height;
+            float wRatio = lab.Width / extent.Width;
+            float ratio = (hRatio < wRatio) ? hRatio : wRatio;
+
+            float newSize = lab.Font.Size * ratio;
+
+            lab.Font = new Font(lab.Font.FontFamily, newSize, lab.Font.Style);
+        }
+
+        private void yesButton_Click(object sender, EventArgs e)
+        {
+            FlashCardModel currentCard = currentFlashCards[0];
+            // remove card from FlashCards list
+            int x = 0;
+            for (int i = 0; i < collection.FlashCards.Count; i++)
+            {
+                if (currentCard.RTKIndex == collection.FlashCards[i].RTKIndex)
+                {
+                    x = i;
+                    break;
+                }
+            }
+            collection.FlashCards.RemoveAt(x);
+
+            // remove card from shuffledflashcards
+            int y = 0;
+            for (int i = 0; i < collection.ShuffledFlashCards.Count; i++)
+            {
+                if (currentCard.RTKIndex == collection.ShuffledFlashCards[i].RTKIndex)
+                {
+                    y = i;
+                    break;
+                }
+            }
+            collection.ShuffledFlashCards.RemoveAt(y);
+
+            // Update removal of card to text file
+            TextConnection connection = new TextConnection();
+            connection.UpdateCollectionFile(collection);
+
+            ShowFirstPage();
+        }
+
+        private void noButton_Click(object sender, EventArgs e)
+        {
+            // move the first flashcard to the end of the deck if currentFLashCards is normal flash card deck
+            if (currentFlashCards == collection.FlashCards)
+            {
+                FlashCardModel tempFlashCard = currentFlashCards[0];
+                currentFlashCards.RemoveAt(0);
+                currentFlashCards.Add(tempFlashCard);
+            }
+
+            // move the first flashcard to the end of the deck if currentFlashCards is shuffled flash card deck.
+            if (currentFlashCards == collection.ShuffledFlashCards)
+            {
+                FlashCardModel tempFlashCard = currentFlashCards[0];
+                currentFlashCards.RemoveAt(0);
+                currentFlashCards.Add(tempFlashCard);
+            }
+
+            // Update move of card to text file
+            TextConnection connection = new TextConnection();
+            connection.UpdateCollectionFile(collection);
+
+            ShowFirstPage();
+        }
+
+        private void shuffleCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (currentFlashCards == collection.FlashCards)
+            {
+                currentFlashCards = collection.ShuffledFlashCards;
+            }
+            else if (currentFlashCards == collection.ShuffledFlashCards)
+            {
+                currentFlashCards = collection.FlashCards;
+            }
+            ShowFirstPage();
+        }
+
+        private void answerInEnglishCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!showEnglishAnswer)
+            {
+                showEnglishAnswer = true;
+            }
+            else if (showEnglishAnswer)
+            {
+                showEnglishAnswer = false;
+            }
+
+            ShowFirstPage();
         }
     }
 }

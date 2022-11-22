@@ -114,7 +114,47 @@ namespace RTK_Revisor
 
         private void createButton_Click(object sender, EventArgs e)
         {
-            CollectionModel cm = new CollectionModel();
+            if (ValidateForm())
+            {
+                CollectionModel cm = new CollectionModel();
+
+                // List of deck model exclusively made to pass in to the CreateCollectionName function to get name for the collection
+                List<DeckModel> nameSetDeckCollection = new List<DeckModel>();
+                foreach (DeckModel d in AddedLessons)
+                {
+                    nameSetDeckCollection.Add(d);
+                }
+
+                foreach (DeckModel deck in AddedLessons)
+                {
+                    foreach (FlashCardModel card in deck.Deck)
+                    {
+                        cm.FlashCards.Add(card);
+                    }
+                }
+                cm.ShuffledFlashCards = new List<FlashCardModel>(cm.FlashCards);
+                cm.ShuffledFlashCards.Shuffle();
+                cm.OriginalFlashCards = new List<FlashCardModel>(cm.FlashCards);
+                cm.Name = CreateCollectionName(nameSetDeckCollection);
+                connection.SaveCollectionToFile(cm);
+
+                ButtonWasClicked();
+                this.Close(); 
+            }
+        }
+
+        public delegate void ClickButton();
+        public event ClickButton ButtonWasClicked;
+
+        private bool ValidateForm()
+        {
+            if (AddedLessons.Count == 0)
+            {
+                MessageBox.Show("Must add at least one lesson to create collection");
+                return false;
+            }
+
+            // Check if the current deck that is trying to be made has the same name as another deck already created
 
             // List of deck model exclusively made to pass in to the CreateCollectionName function to get name for the collection
             List<DeckModel> nameSetDeckCollection = new List<DeckModel>();
@@ -122,20 +162,19 @@ namespace RTK_Revisor
             {
                 nameSetDeckCollection.Add(d);
             }
+            string currentName = CreateCollectionName(nameSetDeckCollection);
 
-            foreach (DeckModel deck in AddedLessons)
+            List<CollectionModel> collections = GetPath("collections", "collections.csv").LoadFile().ToList().ConvertToCollectionModels();
+            foreach (CollectionModel c in collections)
             {
-                foreach (FlashCardModel card in deck.Deck)
+                if (currentName == c.Name)
                 {
-                    cm.FlashCards.Add(card);
+                    MessageBox.Show("Deck has already been created");
+                    return false;
                 }
             }
-            cm.ShuffledFlashCards = new List<FlashCardModel>(cm.FlashCards);
-            cm.ShuffledFlashCards.Shuffle();
-            cm.OriginalFlashCards = new List<FlashCardModel>(cm.FlashCards);
-            cm.Name = CreateCollectionName(nameSetDeckCollection);
-            connection.SaveCollectionToFile(cm);
 
+            return true;
         }
 
         private string CreateCollectionName(List<DeckModel> collection)

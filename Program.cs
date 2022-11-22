@@ -13,7 +13,7 @@ namespace RTK_Revisor
 
             Console.WriteLine(AppDomain.CurrentDomain.BaseDirectory);
             ApplicationConfiguration.Initialize();
-            Application.Run(new CreateCollectionForm());
+            Application.Run(new MainWindow());
         }
     }
 }

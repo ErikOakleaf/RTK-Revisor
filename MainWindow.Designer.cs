@@ -81,6 +81,7 @@
             this.reviseCollectionButton.TabIndex = 4;
             this.reviseCollectionButton.Text = "Revise Collection";
             this.reviseCollectionButton.UseVisualStyleBackColor = true;
+            this.reviseCollectionButton.Click += new System.EventHandler(this.reviseCollectionButton_Click);
             // 
             // createCollectionButton
             // 

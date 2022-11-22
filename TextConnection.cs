@@ -24,5 +24,22 @@ namespace RTK_Revisor
             collections.WriteToCollectionsFile();
 
         }
+
+        public void UpdateCollectionFile(CollectionModel collection)
+        {
+            List<CollectionModel> collections = GetPath("collections", "collections.csv").LoadFile().ToList().ConvertToCollectionModels();
+
+            foreach (CollectionModel c in collections)
+            {
+                if (collection.Name == c.Name)
+                {
+                    c.FlashCards = collection.FlashCards;
+                    c.ShuffledFlashCards = collection.ShuffledFlashCards;
+                    break;
+                }
+            }
+
+            collections.WriteToCollectionsFile();
+        }
     }
 }
