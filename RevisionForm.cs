@@ -14,7 +14,6 @@ namespace RTK_Revisor
     {
 
         public CollectionModel collection;
-        public DeckModel deck;
         private int currentIndex = 0;
 
         //sample data
@@ -24,17 +23,7 @@ namespace RTK_Revisor
         {
             this.collection = collection;
             InitializeComponent();
-            InitializeDeck();
             InitializeForm();
-        }
-
-        private void InitializeDeck()
-        {
-            deck = new DeckModel();
-            foreach (DeckModel d in collection.Collection)
-            {
-                deck.Deck.AddRange(d.Deck);
-            }
         }
 
         private void InitializeForm()
@@ -45,7 +34,7 @@ namespace RTK_Revisor
 
         private void WireUpLists()
         {
-            flashCardLabel.Text = deck.Deck[currentIndex].Word;
+            flashCardLabel.Text = collection.FlashCards[0].Word;
         }
     }
 }

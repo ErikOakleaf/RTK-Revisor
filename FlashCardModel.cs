@@ -11,14 +11,5 @@ namespace RTK_Revisor
         public string Kanji { get; set; }
         public string Word { get; set; }
         public string RTKIndex { get; set; }
-        public int CurrentIndex { get; set; }
-
-        public bool IsCompleted { get; set; }
-
-        public FlashCardModel() 
-        {
-            CurrentIndex = 0;
-            IsCompleted = false;
-        }
     }
 }

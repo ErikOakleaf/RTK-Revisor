@@ -17,11 +17,13 @@ namespace RTK_Revisor
     {
         List<DeckModel> Lessons;
         List<DeckModel> AddedLessons;
+        TextConnection connection;
         public CreateCollectionForm()
         {
             // initialize lessons lists
             Lessons = new List<DeckModel>();
             AddedLessons = new List<DeckModel>();
+            connection = new TextConnection();
 
             InitializeComponent();
             InitializeLessons();
@@ -44,7 +46,7 @@ namespace RTK_Revisor
                 string[] indexes = cols[1].Split(':');
 
                 // iterate through every wanted index in allKanji file and add them as FLashCardModel to a DeckModel
-                for (int i = int.Parse(indexes[0]); i < int.Parse(indexes[1]); i++)
+                for (int i = int.Parse(indexes[0]) - 1; i < int.Parse(indexes[1]); i++)
                 {
                     string[] info = AllKanji[i].Split(',');
                     FlashCardModel flashCard = new FlashCardModel();
@@ -113,12 +115,26 @@ namespace RTK_Revisor
         private void createButton_Click(object sender, EventArgs e)
         {
             CollectionModel cm = new CollectionModel();
+
+            // List of deck model exclusively made to pass in to the CreateCollectionName function to get name for the collection
+            List<DeckModel> nameSetDeckCollection = new List<DeckModel>();
+            foreach (DeckModel d in AddedLessons)
+            {
+                nameSetDeckCollection.Add(d);
+            }
+
             foreach (DeckModel deck in AddedLessons)
             {
-                cm.Collection.Add(deck);
+                foreach (FlashCardModel card in deck.Deck)
+                {
+                    cm.FlashCards.Add(card);
+                }
             }
-            cm.Name = CreateCollectionName(cm.Collection);
-            TextConnection.SaveToCollection(cm);
+            cm.ShuffledFlashCards = new List<FlashCardModel>(cm.FlashCards);
+            cm.ShuffledFlashCards.Shuffle();
+            cm.OriginalFlashCards = new List<FlashCardModel>(cm.FlashCards);
+            cm.Name = CreateCollectionName(nameSetDeckCollection);
+            connection.SaveCollectionToFile(cm);
 
         }
 
@@ -187,7 +203,7 @@ namespace RTK_Revisor
                     x++;
                 }
             }
-            str = str.Substring(0, str.Length - 2);
+            str = str.Substring(0, str.Length - 2).Trim();
             return str;
         }
     }
