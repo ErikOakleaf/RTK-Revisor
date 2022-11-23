@@ -35,6 +35,7 @@
             this.rtkIndexLabel = new System.Windows.Forms.Label();
             this.shuffleCheckBox = new System.Windows.Forms.CheckBox();
             this.answerInEnglishCheckBox = new System.Windows.Forms.CheckBox();
+            this.remainingKanjiLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // flashCardLabel
@@ -110,12 +111,23 @@
             this.answerInEnglishCheckBox.UseVisualStyleBackColor = true;
             this.answerInEnglishCheckBox.CheckedChanged += new System.EventHandler(this.answerInEnglishCheckBox_CheckedChanged);
             // 
+            // remainingKanjiLabel
+            // 
+            this.remainingKanjiLabel.AutoSize = true;
+            this.remainingKanjiLabel.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.remainingKanjiLabel.Location = new System.Drawing.Point(575, 40);
+            this.remainingKanjiLabel.Name = "remainingKanjiLabel";
+            this.remainingKanjiLabel.Size = new System.Drawing.Size(164, 23);
+            this.remainingKanjiLabel.TabIndex = 7;
+            this.remainingKanjiLabel.Text = "<x kanji remaining>";
+            // 
             // RevisionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(15F, 37F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(792, 498);
+            this.Controls.Add(this.remainingKanjiLabel);
             this.Controls.Add(this.answerInEnglishCheckBox);
             this.Controls.Add(this.shuffleCheckBox);
             this.Controls.Add(this.rtkIndexLabel);
@@ -142,5 +154,6 @@
         private Label rtkIndexLabel;
         private CheckBox shuffleCheckBox;
         private CheckBox answerInEnglishCheckBox;
+        private Label remainingKanjiLabel;
     }
 }

@@ -33,6 +33,7 @@ namespace RTK_Revisor
                 yesButton.Hide();
                 noButton.Hide();
                 flipButton.Show();
+                remainingKanjiLabel.Text = $"Remaining kanji: {collection.FlashCards.Count}";
                 if (!showEnglishAnswer)
                 {
                     flashCardLabel.Text = currentFlashCards[0].Word;
@@ -51,6 +52,7 @@ namespace RTK_Revisor
                 rtkIndexLabel.Hide();
                 shuffleCheckBox.Hide();
                 answerInEnglishCheckBox.Hide();
+                remainingKanjiLabel.Hide();
                 flashCardLabel.Text = "Collection Completed !";
             }
         }

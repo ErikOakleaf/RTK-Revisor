@@ -114,8 +114,14 @@ namespace RTK_Revisor
                 CollectionModel currentCollection = (CollectionModel)collectionListBox.SelectedItem;
                 RevisionForm rf = new RevisionForm(currentCollection);
                 moveCollectionToTop(currentCollection);
+                rf.FormClosed += new FormClosedEventHandler(revisionForm_FormClosed);
                 rf.Show();
                 
+
+                void revisionForm_FormClosed(object sender, FormClosedEventArgs e)
+                {
+                    WireUpLists();
+                }
             }
         }
 
