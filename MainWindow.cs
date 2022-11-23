@@ -98,7 +98,13 @@ namespace RTK_Revisor
         {
             CreateCollectionForm ccf = new CreateCollectionForm();
             ccf.Show();
-            ccf.ButtonWasClicked += new CreateCollectionForm.ClickButton(WireUpLists);
+            ccf.ButtonWasClicked += new CreateCollectionForm.ClickButton(createdFormProcedures);
+        }
+
+        private void createdFormProcedures()
+        {
+            WireUpLists();
+            moveCollectionToTop(Collections[^1]);
         }
 
         private void reviseCollectionButton_Click(object sender, EventArgs e)
