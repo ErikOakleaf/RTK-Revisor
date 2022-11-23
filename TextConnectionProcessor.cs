@@ -50,19 +50,24 @@ namespace RTK_Revisor
             {
                 // Get all id's from the (possibly) modified flash cards
                 string idStr = "";
-                foreach (FlashCardModel fc in c.FlashCards)
-                {
-                    idStr += $"{fc.RTKIndex}:";
-                }
-                idStr = idStr.Substring(0, idStr.Length - 1);
-
-                // Get all id's for shuffled flash cards
                 string idStr2 = "";
-                foreach (FlashCardModel fc in c.ShuffledFlashCards)
+
+                if (c.FlashCards.Count > 0)
                 {
-                    idStr2 += $"{fc.RTKIndex}:";
+                    foreach (FlashCardModel fc in c.FlashCards)
+                    {
+                        idStr += $"{fc.RTKIndex}:";
+                    }
+                    idStr = idStr.Substring(0, idStr.Length - 1);
+
+                    // Get all id's for shuffled flash cards
+
+                    foreach (FlashCardModel fc in c.ShuffledFlashCards)
+                    {
+                        idStr2 += $"{fc.RTKIndex}:";
+                    }
+                    idStr2 = idStr2.Substring(0, idStr2.Length - 1); 
                 }
-                idStr2 = idStr2.Substring(0, idStr2.Length - 1);
                 // Get all id's from the OriginalFlashCards
                 string idStr3 = "";
                 foreach (FlashCardModel fc in c.OriginalFlashCards)
@@ -85,26 +90,35 @@ namespace RTK_Revisor
                 CollectionModel c = new CollectionModel();
                 string[] cols = line.Split(',');
                 c.Name = cols[0];
+
                 string[] flashCardsIds= cols[1].Split(":");
-                foreach (string id in flashCardsIds)
+                if (flashCardsIds[0] != "")
                 {
-                    FlashCardModel fc = new FlashCardModel();
-                    string[] info = AllKanji[int.Parse(id) - 1].Split(',');
-                    fc.Kanji = info[0];
-                    fc.Word = info[1];
-                    fc.RTKIndex = info[2];
-                    c.FlashCards.Add(fc);
+                    foreach (string id in flashCardsIds)
+                    {
+                        FlashCardModel fc = new FlashCardModel();
+                        string[] info = AllKanji[int.Parse(id) - 1].Split(',');
+                        fc.Kanji = info[0];
+                        fc.Word = info[1];
+                        fc.RTKIndex = info[2];
+                        c.FlashCards.Add(fc);
+                    } 
                 }
+
                 string[] shuffledFlashCardIds = cols[2].Split(":");
-                foreach (string id in shuffledFlashCardIds)
+                if (shuffledFlashCardIds[0] != "")
                 {
-                    FlashCardModel fc = new FlashCardModel();
-                    string[] info = AllKanji[int.Parse(id) - 1].Split(',');
-                    fc.Kanji = info[0];
-                    fc.Word = info[1];
-                    fc.RTKIndex = info[2];
-                    c.ShuffledFlashCards.Add(fc);
+                    foreach (string id in shuffledFlashCardIds)
+                    {
+                        FlashCardModel fc = new FlashCardModel();
+                        string[] info = AllKanji[int.Parse(id) - 1].Split(',');
+                        fc.Kanji = info[0];
+                        fc.Word = info[1];
+                        fc.RTKIndex = info[2];
+                        c.ShuffledFlashCards.Add(fc);
+                    } 
                 }
+
                 string[] originalFlashCardIds = cols[3].Split(":");
                 foreach (string id in originalFlashCardIds)
                 {

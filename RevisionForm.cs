@@ -28,18 +28,31 @@ namespace RTK_Revisor
 
         private void ShowFirstPage()
         {
-            yesButton.Hide();
-            noButton.Hide();
-            flipButton.Show();
-            if (!showEnglishAnswer)
+            if (collection.FlashCards.Count > 0)
             {
-                flashCardLabel.Text = currentFlashCards[0].Word; 
+                yesButton.Hide();
+                noButton.Hide();
+                flipButton.Show();
+                if (!showEnglishAnswer)
+                {
+                    flashCardLabel.Text = currentFlashCards[0].Word;
+                }
+                else
+                {
+                    flashCardLabel.Text = currentFlashCards[0].Kanji;
+                }
+                rtkIndexLabel.Hide(); 
             }
             else
             {
-                flashCardLabel.Text = currentFlashCards[0].Kanji;
+                yesButton.Hide();
+                noButton.Hide();
+                flipButton.Hide();
+                rtkIndexLabel.Hide();
+                shuffleCheckBox.Hide();
+                answerInEnglishCheckBox.Hide();
+                flashCardLabel.Text = "Collection Completed !";
             }
-            rtkIndexLabel.Hide();
         }
 
         private void flipCard()
