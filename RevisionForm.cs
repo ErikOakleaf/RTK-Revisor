@@ -23,6 +23,7 @@ namespace RTK_Revisor
             currentFlashCards = collection.FlashCards;
             InitializeComponent();
             ShowFirstPage();
+            this.KeyPreview = true;
         }
 
         private void ShowFirstPage()
@@ -41,12 +42,11 @@ namespace RTK_Revisor
             rtkIndexLabel.Hide();
         }
 
-        private void flipButton_Click(object sender, EventArgs e)
+        private void flipCard()
         {
-
             if (!showEnglishAnswer)
             {
-                flashCardLabel.Text = currentFlashCards[0].Kanji; 
+                flashCardLabel.Text = currentFlashCards[0].Kanji;
             }
             else
             {
@@ -59,6 +59,11 @@ namespace RTK_Revisor
             yesButton.Show();
             noButton.Show();
             flipButton.Hide();
+        }
+
+        private void flipButton_Click(object sender, EventArgs e)
+        {
+            flipCard();
         }
         private void scaleFont(Label lab)
         {
@@ -160,6 +165,22 @@ namespace RTK_Revisor
             }
 
             ShowFirstPage();
+        }
+
+        private void RevisionForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.X)
+            {
+                flipButton.PerformClick();
+            }
+            if (e.KeyCode == Keys.Z)
+            {
+                yesButton.PerformClick();
+            }
+            if (e.KeyCode == Keys.C)
+            {
+                noButton.PerformClick();
+            }
         }
     }
 }

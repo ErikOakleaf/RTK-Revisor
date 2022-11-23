@@ -41,5 +41,27 @@ namespace RTK_Revisor
 
             collections.WriteToCollectionsFile();
         }
+
+        public void UpdateAllCollections(List<CollectionModel> collections)
+        {
+            collections.WriteToCollectionsFile();
+        }
+
+        public void RemoveCollectionFromFile(CollectionModel collection)
+        {
+            List<CollectionModel> collections = GetPath("collections", "collections.csv").LoadFile().ToList().ConvertToCollectionModels();
+            int x = 0;
+            for (int i = 0; i < collections.Count; i++)
+            {
+                if (collections[i].Name == collection.Name)
+                {
+                    x = i;
+                    break;
+                }
+            }
+
+            collections.RemoveAt(x);
+            collections.WriteToCollectionsFile();
+        }
     }
 }

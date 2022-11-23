@@ -103,9 +103,78 @@ namespace RTK_Revisor
 
         private void reviseCollectionButton_Click(object sender, EventArgs e)
         {
-            RevisionForm rf = new RevisionForm((CollectionModel)collectionListBox.SelectedItem);
-            rf.Show();
-            this.Hide();
+            if (validateForm())
+            {
+                CollectionModel currentCollection = (CollectionModel)collectionListBox.SelectedItem;
+                RevisionForm rf = new RevisionForm(currentCollection);
+                moveCollectionToTop(currentCollection);
+                rf.Show();
+                
+            }
+        }
+
+        private void initializeConnectionButton_Click(object sender, EventArgs e)
+        {
+            if (validateForm())
+            {
+                // Reset the lists of flashcards by setting them to the original flashcards which is stored
+                CollectionModel collection = (CollectionModel)collectionListBox.SelectedItem;
+                collection.FlashCards = new List<FlashCardModel>(collection.OriginalFlashCards);
+                collection.ShuffledFlashCards = new List<FlashCardModel>(collection.OriginalFlashCards);
+                collection.ShuffledFlashCards.Shuffle();
+
+                // Update initialization to text file
+                TextConnection connection = new TextConnection();
+                connection.UpdateCollectionFile(collection);
+
+                WireUpLists(); 
+            }
+        }
+
+        private void reseedCollectionButton_Click(object sender, EventArgs e)
+        {
+            if (validateForm())
+            {
+                // Shuffle ShuffledFlashCards deck
+                CollectionModel collection = (CollectionModel)collectionListBox.SelectedItem;
+                collection.ShuffledFlashCards.Shuffle();
+
+                // Update shuffle to text file
+                TextConnection connection = new TextConnection();
+                connection.UpdateCollectionFile(collection);
+
+                WireUpLists(); 
+            }
+        }
+
+        private bool validateForm()
+        {
+            if (Collections.Count == 0)
+            {
+                MessageBox.Show("Must create collection");
+                return false;
+            }
+            return true;
+        }
+
+        private void removeCollectionButton_Click(object sender, EventArgs e)
+        {
+            if (validateForm())
+            {
+                CollectionModel collection = (CollectionModel)collectionListBox.SelectedItem;
+                TextConnection connection = new TextConnection();
+                connection.RemoveCollectionFromFile(collection);
+                WireUpLists();
+            }
+        }
+
+        private void moveCollectionToTop(CollectionModel collection)
+        {
+            Collections.Remove(collection);
+            Collections.Insert(0, collection);
+            TextConnection connection = new TextConnection();
+            connection.UpdateAllCollections(Collections);
+            WireUpLists();
         }
     }
 }
